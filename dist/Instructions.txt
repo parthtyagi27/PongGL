@@ -1,0 +1,1 @@
+Run the jar file, it already has LWJGL and it's natives packaged inside.
