@@ -4,7 +4,9 @@ import org.lwjgl.opengl.GL11;
 
 public class Paddle
 {
-	private int x, y, speed = 2;
+	private float x, y;
+	private float speed = 1f;
+	private float speedCap = 10f;
 	public static int width = 20, height = 80;
 	
 	public Paddle(int x, int y)
@@ -18,39 +20,40 @@ public class Paddle
 		GL11.glRectf(x, y, x + width, y + height);
 	}
 	
-	public int getX()
+	public float getX()
 	{
 		return x;
 	}
 	
-	public int getY()
+	public float getY()
 	{
 		return y;
 	}
 	
-	public void setX(int value)
+	public void setX(float value)
 	{
 		x = value;
 	}
 	
-	public void setY(int value)
+	public void setY(float value)
 	{
 		y = value;
 	}
 
-	public void aIupdate()
-	{
-	}
-
 	public void moveUp()
 	{
-		
+		speed += 0.5f;
+		if(speed >= speedCap)
+			speed = speedCap;
 		if(y + height <= Main.HEIGHT)
 			y += speed;
 	}
 	
 	public void moveDown()
 	{
+		speed += 0.5f;
+		if(speed >= speedCap)
+			speed = speedCap;
 		if(y >= 0)
 			y -= speed;
 	}
@@ -62,9 +65,9 @@ public class Paddle
 		return false;
 	}
 	
-	public void setSpeed()
+	public void resetSpeed()
 	{
-		speed = -speed;
+		speed = 1f;
 	}
 	
 }
