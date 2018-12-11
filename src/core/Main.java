@@ -1,7 +1,5 @@
 package core;
 
-import java.nio.ByteBuffer;
-
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
@@ -26,15 +24,16 @@ public class Main
 		window = new Window(WIDTH, HEIGHT, "Pong");
 		window.render();
 		input = new Input(window);
-		
 		GLFW.glfwMakeContextCurrent(window.getWindowID());
 		//Get Ready to render
+		window.disableResize();
 		init();
+		
 		
 		time = getTime();
 		double frameTime = 0;
 		int frames = 0;
-		
+
 		while(window.isClosed() == false)
 		{
 			boolean canRender = false;
@@ -49,9 +48,8 @@ public class Main
 				unprocessedTime -= fpsCap;
 				canRender = true;
 				window.update();
-				//rendering code here
+				//update code here
 				update();
-				render();
 				if(frameTime >= 1.0)
 				{
 					frameTime = 0;
@@ -64,12 +62,11 @@ public class Main
 			{
 				GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 				//rendering code here
-				update();
 				render();
 				window.swapBuffers();
 				frames++;
 			}
-			
+
 		}
 		
 		window.flush();
@@ -88,13 +85,17 @@ public class Main
 	private static void update()
 	{
 
-		if(input.isKeyPressed(GLFW.GLFW_KEY_DOWN))
+		if(input.isKeyPressed(GLFW.GLFW_KEY_S) || input.isKeyPressed(GLFW.GLFW_KEY_DOWN))
 		{
 			playerPaddle.moveDown();
 		}
-		else if(input.isKeyPressed(GLFW.GLFW_KEY_UP))
+		else if(input.isKeyPressed(GLFW.GLFW_KEY_W) || input.isKeyPressed(GLFW.GLFW_KEY_UP))
 		{
 			playerPaddle.moveUp();
+		}
+		else
+		{
+			playerPaddle.resetSpeed();
 		}
 		
 		ball.update();
@@ -118,7 +119,7 @@ public class Main
 		//game objects
 		playerPaddle = new Paddle(0 , (HEIGHT - Paddle.height)/2);
 		computerPaddle = new Paddle(WIDTH - Paddle.width, (HEIGHT - Paddle.height)/2);
-		ball = new Ball((WIDTH - Ball.radius)/2, (HEIGHT - ball.radius)/2);
+		ball = new Ball((WIDTH - Ball.radius)/2, (HEIGHT - Ball.radius)/2);
 		ai = new AI(computerPaddle, ball);
 	}
 	
